@@ -1,0 +1,27 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: franquicias-mysql
+    environment:
+      MYSQL_DATABASE: franquicias_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  app:
+    build: .
+    container_name: franquicias-app
+    depends_on:
+      - mysql
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/franquicias_db
+      DB_USERNAME: root
+      DB_PASSWORD: root
+    ports:
+      - "8080:8080"
+
+volumes:
+  mysql_data:
